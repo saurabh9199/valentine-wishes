@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Surprise</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .container.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h1, h2, p {
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: crimson;
+            color: white;
+            margin:5px;
+            padding: 12px 24px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 25px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: darkred;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 25px;
+            border: 2px solid white;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            width: 250px;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: crimson;
+            box-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+        }
+
+        .hearts, .flowers, .butterflies {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .heart, .flower, .butterfly {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: floatUp 6s infinite ease-in-out;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        #countdown {
+            font-size: 24px;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts"></div>
+    <div class="flowers"></div>
+    <div class="butterflies"></div>
+
+    <div class="container show" id="page1">
+        <h1>❤️ Enter Your Love's Name ❤️</h1>
+        <input type="text" id="loverName" placeholder="Enter name here...">
+        <button onclick="goToPage2()">Next</button>
+    </div>
+
+    <div class="container hidden" id="page2">
+        <h2>Click to See the Magic!</h2>
+        <button onclick="goToPage3()">Click Me</button>
+    </div>
+
+    <div class="container hidden" id="page3">
+        <h2>For My Love, <span id="nameDisplay"></span></h2>
+        <p>From the moment I met you, my world changed in ways I never imagined...</p>
+        <p>❤️ Yours, always and forever. ❤️</p>
+        <p id="countdown">Redirecting in 30 seconds...</p>
+    </div>
+
+    <script>
+        function goToPage2() {
+            document.getElementById("page1").classList.remove("show");
+            setTimeout(() => {
+                document.getElementById("page1").classList.add("hidden");
+                document.getElementById("page2").classList.remove("hidden");
+                document.getElementById("page2").classList.add("show");
+                createHearts();
+                createFlowers();
+                createButterflies();
+            }, 1000);
+        }
+
+        function goToPage3() {
+            document.getElementById("page2").classList.remove("show");
+            setTimeout(() => {
+                document.getElementById("page2").classList.add("hidden");
+                document.getElementById("page3").classList.remove("hidden");
+                document.getElementById("page3").classList.add("show");
+                const name = document.getElementById("loverName").value || "My Love";
+                document.getElementById("nameDisplay").innerText = name;
+                startCountdown();
+            }, 1000);
+        }
+
+        function startCountdown() {
+            let timeLeft = 30;
+            const countdownElement = document.getElementById("countdown");
+            const countdownInterval = setInterval(() => {
+                timeLeft--;
+                countdownElement.innerText = `Redirecting in ${timeLeft} seconds...`;
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = "main.html";
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
